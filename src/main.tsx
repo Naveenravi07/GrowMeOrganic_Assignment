@@ -1,24 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import './index.css'
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import FormComponent from './Components/Form.tsx';
-import UserComponent from './Components/User.tsx';
+import DataPage from './Pages/DataPage.tsx';
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
-    },
-    {
-        path: "/form",
         element: <FormComponent />,
     },
     {
-        path: "/user",
-        element: <UserComponent />,
+        path: "/data",
+        element: <DataPage/>,
     },
 ])
 

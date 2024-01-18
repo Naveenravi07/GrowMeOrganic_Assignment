@@ -20,7 +20,7 @@ export default function FormComponent(){
         }
         localStorage.setItem('user_data',JSON.stringify(userData))
         alert("Login Success")
-        navigate('/user')
+        navigate('/data')
         
     }
 
@@ -32,7 +32,7 @@ export default function FormComponent(){
         <TextField label="Email" onChange={(e)=>setEmail(e.target.value)} variant="outlined" margin="normal" fullWidth />
         <Button variant='contained' onClick={(e)=>onFormSubmit(e)} > Submit </Button>
       </form>
-      <Button style={{paddingTop:'30px'}} onClick={()=>navigate('/user')} variant='text' > Already Logged In ? Click to redirect to user page</Button>
+      <Button style={{paddingTop:'30px'}} onClick={()=>navigate('/data')} variant='text' > Already Logged In ? Click to redirect to data page</Button>
     </Container>
     )
 }
