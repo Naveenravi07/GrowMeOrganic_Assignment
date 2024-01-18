@@ -50,36 +50,35 @@ const Sidebar = () => {
         }
     };
 
-    const handleSectionToogle = (id: number) => {
-        let subs = departmentsData.find((obj) => obj.id == id)?.subDepartments.map((dept) => dept.id)
-        const curr_state = selectedCategories.find((obj) => obj.id == id)
-        if (subs == undefined) {
-            subs = []
-        }
-        if (!curr_state) {
-            return setSelectedCategories([...selectedCategories, { id, subs }])
-        }
-        return setSelectedCategories([...selectedCategories].filter((obj) => obj.id !== id))
-    }
+    const handleSectionToggle = (id: number): void => {
+        const subs = departmentsData.find((obj) => obj.id === id)?.subDepartments.map((dept) => dept.id) || [];
+        const currState = selectedCategories.find((obj) => obj.id === id);
 
-    const handleSubSectionToogle = (dept_id: number,sub_dept:number) => {
-        const curr_state = selectedCategories.find((obj) => obj.id == dept_id)
-        const curr_state_subs = curr_state?.subs.find((obj)=>obj == sub_dept)
-            
-            if(!curr_state){
-                if(!curr_state_subs){
-                    const updatedObj = {id:dept_id,subs:[sub_dept]}
-                    return setSelectedCategories([...selectedCategories,updatedObj])
-                }
-            }else{
-                if(!curr_state_subs){
-                    const updatedObj = {id:dept_id,subs:[...curr_state.subs,sub_dept]}
-                    return setSelectedCategories([...selectedCategories].map((obj)=>obj.id == updatedObj.id ? updatedObj: obj))
-                }else{
-                    const updatedObj = {id:dept_id,subs:curr_state.subs.filter((obj)=> obj!== sub_dept)}
-                    return setSelectedCategories([...selectedCategories].map((obj)=>obj.id == updatedObj.id ? updatedObj: obj))
-                }
-            }
+        if (!currState) {
+            setSelectedCategories([...selectedCategories, { id, subs }]);
+        } else {
+            setSelectedCategories([...selectedCategories].filter((obj) => obj.id !== id));
+        }
+    };
+    
+    const handleSubSectionToggle = (deptId: number, subDept: number): void => {
+  const currState = selectedCategories.find((obj) => obj.id === deptId);
+  const currStateSubs = currState?.subs.includes(subDept);
+
+  if (!currState) {
+    if (!currStateSubs) {
+      const updatedObj = { id: deptId, subs: [subDept] };
+      setSelectedCategories([...selectedCategories, updatedObj]);
+    }
+  } else {
+    const updatedObj = {
+      id: deptId,
+      subs: currStateSubs
+        ? currState.subs.filter((obj) => obj !== subDept)
+        : [...currState.subs, subDept],
+    };
+    setSelectedCategories([...selectedCategories].map((obj) => (obj.id === updatedObj.id ? updatedObj : obj)));
+  }
     }
 
     const isCategorySelected = (dept_id: number): boolean => {
@@ -98,6 +97,7 @@ const Sidebar = () => {
             return false
         }
     }
+
     return (
         <List component="nav" >
 
@@ -105,7 +105,7 @@ const Sidebar = () => {
                 <div key={department.id}>
 
                     <ListItem onClick={() => handleToggle(department.id)}>
-                        <ListItemIcon onClick={() => handleSectionToogle(department.id)}>
+                        <ListItemIcon onClick={() => handleSectionToggle(department.id)}>
                             <Checkbox checked={isCategorySelected(department.id)} />
                         </ListItemIcon>
                         <ListItemText primary={department.name} />
@@ -116,7 +116,7 @@ const Sidebar = () => {
                         <List component="div"  >
                             {department.subDepartments.map((subDept) => (
                                 <ListItem key={subDept.id}>
-                                    <ListItemIcon onClick={()=>handleSubSectionToogle(department.id,subDept.id)}>
+                                    <ListItemIcon onClick={() => handleSubSectionToggle(department.id, subDept.id)}>
                                         <Checkbox checked={isSubCategorySelected(department.id, subDept.id)} />
                                     </ListItemIcon>
                                     <ListItemText primary={subDept.name} />
